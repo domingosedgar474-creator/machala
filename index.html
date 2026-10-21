@@ -2,90 +2,64 @@
 <html lang="pt-AO">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MACHALA SEGURO - MACHALA 5MIN</title>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MACHALA Nk - Huambo</title>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif}
-body{background:#f0f2f5;display:flex;justify-content:center;min-height:100vh}
-.app{width:100%;max-width:420px;background:#f0f2f5;min-height:100vh;display:flex;flex-direction:column}
-.header{background:#fff;border-bottom:1px solid #e4e6eb;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20}
-.brand-main{font-weight:800;font-size:20px;color:#1877F2}
-.brand-main b{color:#111827}
-.brand-sub{font-size:11px;color:#65676b;margin-top:2px}
-.header-btn{background:#f0f2f5;border:none;padding:8px 14px;border-radius:20px;font-weight:700;font-size:13px;cursor:pointer}
-.header-btn.primary{background:#1877F2;color:#fff}
-.card{background:#fff;border-radius:12px;margin:10px 12px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.06)}
-.card-title{font-weight:800;font-size:15px;display:flex;gap:8px;align-items:center}
-.dot{width:8px;height:8px;background:#1877F2;border-radius:50%}
-.input{width:100%;background:#f0f2f5;border:1px solid transparent;border-radius:12px;padding:12px 14px;font-size:14px;margin-top:10px}
-.input:focus{border-color:#1877F2;background:#fff;outline:none}
-.btn-main{width:100%;background:#1877F2;color:#fff;border:none;border-radius:12px;padding:13px;font-weight:800;font-size:14px;margin-top:10px;cursor:pointer}
-.btn-sec{width:100%;background:#e4e6eb;color:#050505;border:none;border-radius:12px;padding:13px;font-weight:700;font-size:14px;margin-top:8px;cursor:pointer}
-.small{font-size:12px;color:#65676b;margin-top:8px;text-align:center}
-.video-preview{width:100%;border-radius:12px;background:#000;margin-top:10px;max-height:220px;display:none}
-.feed{display:flex;flex-direction:column;padding-bottom:80px}
-.post-head{display:flex;gap:10px;align-items:center}
-.avatar{width:40px;height:40px;border-radius:50%;background:#1877F2;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
-.post-name{font-weight:700;font-size:14px}
-.post-meta{font-size:12px;color:#65676b}
-.post-text{margin-top:10px;font-size:14px;line-height:1.4;white-space:pre-wrap}
-.post-video{width:100%;border-radius:12px;margin-top:12px;background:#000;max-height:520px}
-.post-actions{display:flex;gap:8px;margin-top:12px;border-top:1px solid #f0f2f5;padding-top:10px}
-.action{flex:1;background:#f0f2f5;border:none;border-radius:8px;padding:9px;font-weight:700;font-size:13px;cursor:pointer}
-.action.liked{background:#e7f3ff;color:#1877F2}
-.action.del{color:#e0245e;background:#ffe9ee}
-.progress{height:6px;background:#e4e6eb;border-radius:10px;overflow:hidden;margin-top:10px;display:none}
-.progress-bar{height:100%;width:0%;background:#1877F2}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:#f0f2f5;display:flex;justify-content:center}
+.app{width:100%;max-width:420px;background:#fff;min-height:100vh}
+.header{background:#fff;border-bottom:1px solid #ddd;padding:10px;position:sticky;top:0;z-index:10}
+.brand{display:flex;justify-content:space-between;align-items:center}
+.brand-main{font-weight:800;font-size:20px}
+.brand-main span{color:#1877f2}
+.filtro{background:#f0f2f5;padding:8px;border-radius:8px;margin-top:8px;display:flex;gap:6px;overflow-x:auto}
+.filtro button{border:none;padding:6px 12px;border-radius:20px;background:#fff;font-weight:700;white-space:nowrap}
+.filtro button.ativo{background:#1877f2;color:#fff}
+.feed{padding:10px}
+.card{border:1px solid #ddd;border-radius:10px;margin-bottom:12px;padding:10px}
+.btn{width:100%;padding:10px;background:#1877f2;color:#fff;border:none;border-radius:8px;font-weight:800;margin-top:8px}
+input,textarea,select{width:100%;padding:10px;margin-top:6px;border:1px solid #ccc;border-radius:8px}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="header">
-    <div><div class="brand-main">MACHALA <b>5MIN</b></div><div class="brand-sub">SEGURO • Venda e mostra em 5 minutos</div></div>
-    <button id="btnAuth" class="header-btn primary" onclick="toggleAuth()">Entrar</button>
-  </div>
-  <div id="authBox" class="card" style="display:none">
-    <div class="card-title"><span class="dot"></span> Sua conta segura</div>
-    <input id="nome" class="input" placeholder="Seu nome">
-    <input id="email" class="input" placeholder="E-mail">
-    <input id="senha" class="input" type="password" placeholder="Senha (mín 6)">
-    <button class="btn-main" onclick="cadastrar()">CRIAR CONTA</button>
-    <button class="btn-sec" onclick="entrar()">ENTRAR</button>
-    <p id="authStatus" class="small"></p>
-  </div>
-  <div id="publishBox" class="card" style="display:none">
-    <div class="card-title"><span class="dot"></span> Publicar produto (max 5 min)</div>
-    <textarea id="leg" class="input" rows="3" placeholder="Ex: Ténis Nike 42, 15.000 Kz - Huambo"></textarea>
-    <input id="file" type="file" accept="video/*" class="input">
-    <video id="preview" class="video-preview" controls></video>
-    <div class="progress" id="progress"><div id="progressBar" class="progress-bar"></div></div>
-    <button id="btnPublish" class="btn-main" onclick="publicar()">+ PUBLICAR AGORA</button>
-    <p id="pubStatus" class="small"></p>
-  </div>
-  <div id="feed" class="feed"></div>
+<div class="header">
+<div class="brand"><div class="brand-main">MACHALA <span>Nk</span></div><button onclick="toggleAuth()">Entrar</button></div>
+<div class="filtro">
+<button class="ativo" onclick="filtrar('todos',this)">Todos</button>
+<button onclick="filtrar('Huambo',this)">Huambo</button>
+<button onclick="filtrar('Luanda',this)">Luanda</button>
+<button onclick="filtrar('Benguela',this)">Benguela</button>
+<button onclick="filtrar('Bié',this)">Bié</button>
+<button onclick="filtrar('Huíla',this)">Huíla</button>
+</div>
+<div style="margin-top:8px">
+<input id="leg" placeholder="O que estás a vender? Ex: Nk no Bairro...">
+<select id="prov"><option value="Huambo">Huambo</option><option value="Luanda">Luanda</option><option value="Benguela">Benguela</option><option value="Bié">Bié</option><option value="Huíla">Huíla</option></select>
+<input type="file" id="file" accept="image/*">
+<button class="btn" onclick="publicar()">Publicar Nk</button>
+</div>
+</div>
+<div id="feed" class="feed"></div>
 </div>
 <script>
-const firebaseConfig = {apiKey:"AIzaSyA0sp02LERYBE60GDnlVP7XpCT4oZNB2jc",authDomain:"machala-nk.firebaseapp.com",projectId:"machala-nk",storageBucket:"machala-nk.firebasestorage.app",messagingSenderId:"678191851074",appId:"1:678191851074:web:f1f015ebaa6fba51712fdb"};
-firebase.initializeApp(firebaseConfig);const auth=firebase.auth();const db=firebase.firestore();
-const ADMIN_EMAIL="domingosedgar474@gmail.com";const CLOUD_NAME="dmh8vxdkl";const UPLOAD_PRESET="machala_unsigned";
-let userNome="Visitante";let userEmail="";let isAdmin=false;
-const PALAVRAS_PROIBIDAS=["porn","xxx","nude","sexo","sex","pelada","pelado","puta","putaria","boquete","punheta","gozar","foda","foder","anal","xvideos","pornhub","onlyfans","pussy","dick","cock","cum","horny","naked","bunda","peitinho","tesao","safada","novinha pelada","vazado","vazada","<script>"];
-function escapeHtml(t){const m={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'};return t.replace(/[&<>"']/g,s=>m[s])}
-function temProibida(txt){return PALAVRAS_PROIBIDAS.some(p=>txt.toLowerCase().includes(p))}
-function toggleAuth(){const b=document.getElementById('authBox');b.style.display=b.style.display==='none'?'block':'none'}
-auth.onAuthStateChanged(async user=>{if(user){userEmail=user.email;isAdmin=userEmail===ADMIN_EMAIL;try{const d=await db.collection('usuarios').doc(user.uid).get();userNome=d.exists?d.data().nome:user.email.split('@')[0]}catch{userNome=user.email.split('@')[0]}document.getElementById('btnAuth').textContent=userNome.split(' ')[0];document.getElementById('btnAuth').onclick=()=>{if(confirm('Sair?')){auth.signOut();location.reload()}};document.getElementById('authBox').style.display='none';document.getElementById('publishBox').style.display='block';}else{document.getElementById('publishBox').style.display='none'}carregarFeed()});
-async function cadastrar(){const nome=document.getElementById('nome').value.trim(),email=document.getElementById('email').value.trim(),senha=document.getElementById('senha').value.trim(),st=document.getElementById('authStatus');if(!nome||!email||!senha){st.textContent='Preencha tudo';return}if(temProibida(nome)){st.textContent='Nome bloqueado';return}st.style.color='#1877F2';st.textContent='Criando...';try{const c=await auth.createUserWithEmailAndPassword(email,senha);await db.collection('usuarios').doc(c.user.uid).set({nome:escapeHtml(nome),email,criado:Date.now()});st.style.color='green';st.textContent='Criado!'}catch(e){st.style.color='red';st.textContent=e.message}}
-async function entrar(){const email=document.getElementById('email').value.trim(),senha=document.getElementById('senha').value.trim(),st=document.getElementById('authStatus');st.style.color='#1877F2';st.textContent='Entrando...';try{await auth.signInWithEmailAndPassword(email,senha);st.textContent=''}catch(e){st.style.color='red';st.textContent=e.message}}
-document.getElementById('file').addEventListener('change',function(e){const f=e.target.files[0];if(!f)return;const v=document.getElementById('preview');v.src=URL.createObjectURL(f);v.style.display='block';v.onloadedmetadata=()=>{if(v.duration>310){alert('Vídeo maior que 5min! Tem '+Math.floor(v.duration/60)+'min');e.target.value='';v.style.display='none'}}});
-async function uploadCloudinary(file){return new Promise((res,rej)=>{const url=`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/video/upload`;const fd=new FormData();fd.append('file',file);fd.append('upload_preset',UPLOAD_PRESET);const xhr=new XMLHttpRequest();xhr.open('POST',url);xhr.upload.onprogress=e=>{if(e.lengthComputable){document.getElementById('progress').style.display='block';document.getElementById('progressBar').style.width=Math.round(e.loaded/e.total*100)+'%' }};xhr.onload=()=>{if(xhr.status>=200&&xhr.status<300){try{res(JSON.parse(xhr.responseText).secure_url)}catch{rej('Erro Cloudinary')}}else{rej(xhr.responseText)}};xhr.onerror=()=>rej('Falha upload');xhr.send(fd)})}
-async function publicar(){const leg=document.getElementById('leg').value.trim()||'Produto',file=document.getElementById('file').files[0],st=document.getElementById('pubStatus'),btn=document.getElementById('btnPublish');if(!auth.currentUser){toggleAuth();return}if(!file){st.textContent='Escolha vídeo';return}if(file.size>100*1024*1024){st.textContent='Max 100MB';return}if(temProibida(leg)||temProibida(file.name)){st.textContent='Bloqueado pelo filtro';return}btn.disabled=true;st.style.color='#1877F2';st.textContent='Enviando...';try{const u=await uploadCloudinary(file);await db.collection('posts').add({nome:userNome,email:userEmail,txt:escapeHtml(leg),videoUrl:u,likes:0,likedBy:[],created:firebase.firestore.FieldValue.serverTimestamp()});st.style.color='green';st.textContent='✅ Publicado!';document.getElementById('leg').value='';document.getElementById('file').value='';document.getElementById('preview').style.display='none';document.getElementById('progress').style.display='none'}catch(e){st.style.color='red';st.textContent='❌ '+e}btn.disabled=false}
-function carregarFeed(){db.collection('posts').orderBy('created','desc').onSnapshot(snap=>{const feed=document.getElementById('feed');feed.innerHTML='';if(snap.empty){feed.innerHTML='<div class="card" style="text-align:center">Nenhum vídeo ainda</div>';return}snap.forEach(doc=>{const p=doc.data(),id=doc.id,pode=userEmail===p.email||isAdmin,curtiu=p.likedBy&&p.likedBy.includes(userEmail),dataTxt=p.created&&p.created.toDate?p.created.toDate().toLocaleString('pt-AO'):'agora';const d=document.createElement('div');d.className='card';d.innerHTML=`<div class="post-head"><div class="avatar">${(p.nome||'M')[0].toUpperCase()}</div><div style="flex:1"><div class="post-name">${p.nome}</div><div class="post-meta">Huambo • ${dataTxt}</div></div>${pode?`<button class="action del" onclick="apagar('${id}')">🗑️</button>`:''}</div><div class="post-text">${p.txt}</div><video class="post-video" src="${p.videoUrl||p.m||''}" controls playsinline></video><div class="post-actions"><button id="like-${id}" class="action ${curtiu?'liked':''}" onclick="curtir('${id}')">❤️ ${p.likes||0} Curtir</button><button class="action" onclick="navigator.clipboard.writeText(location.href)">↗️ Partilhar</button></div>`;feed.appendChild(d)})})}
-async function curtir(id){if(!auth.currentUser){toggleAuth();return}const ref=db.collection('posts').doc(id);const s=await ref.get();const d=s.data();let l=d.likes||0,lb=d.likedBy||[];if(lb.includes(userEmail)){l=Math.max(0,l-1);lb=lb.filter(e=>e!==userEmail)}else{l++;lb.push(userEmail)}await ref.update({likes:l,likedBy:lb})}
-async function apagar(id){if(!confirm('Apagar?'))return;await db.collection('posts').doc(id).delete()}
+const firebaseConfig={apiKey:"AIzaSyAO8d9oR9JV9p8YqXv8Xv8Xv8Xv8Xv8Xv8Xv8X",authDomain:"machala-5min.firebaseapp.com",projectId:"machala-5min"};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();const auth=firebase.auth();
+const ADMIN_EMAIL="domingosedgar474@gmail.com";
+let filtroAtual="todos";
+function filtrar(p,el){filtroAtual=p;document.querySelectorAll('.filtro button').forEach(b=>b.classList.remove('ativo'));el.classList.add('ativo');carregarFeed();}
+function toggleAuth(){const e=prompt("Email:");const s=prompt("Senha:");if(e&&s)auth.signInWithEmailAndPassword(e,s).catch(()=>auth.createUserWithEmailAndPassword(e,s))}
+async function publicar(){const leg=document.getElementById('leg').value;const prov=document.getElementById('prov').value;if(!leg)return alert("Escreve algo!");if(!auth.currentUser)return alert("Entra primeiro!");const file=document.getElementById('file').files[0];let img="";if(file)img=await uploadCloudinary(file);await db.collection('posts').add({leg,prov,img,email:auth.currentUser.email,nome:auth.currentUser.email,likes:0,data:firebase.firestore.FieldValue.serverTimestamp()});document.getElementById('leg').value="";carregarFeed();}
+async function uploadCloudinary(file){const fd=new FormData();fd.append("file",file);fd.append("upload_preset","machala_preset");const r=await fetch("https://api.cloudinary.com/v1_1/demhx9v0s/image/upload",{method:"POST",body:fd});const j=await r.json();return j.secure_url;}
+function carregarFeed(){let q=db.collection('posts').orderBy('data','desc');if(filtroAtual!="todos")q=q.where('prov','==',filtroAtual);q.onSnapshot(s=>{const f=document.getElementById('feed');f.innerHTML="";s.forEach(d=>{const p=d.data();f.innerHTML+=`<div class="card"><b>${p.nome}</b> - ${p.prov||''}<br>${p.leg}<br>${p.img?`<img src="${p.img}" style="width:100%;border-radius:8px;margin-top:6px">`:""}<br><button onclick="curtir('${d.id}')">Curtir (${p.likes||0})</button> ${auth.currentUser&&auth.currentUser.email==ADMIN_EMAIL?`<button onclick="apagar('${d.id}')">Apagar</button>`:""}</div>`})})}
+async function curtir(id){if(!auth.currentUser)return alert("Entra!");const d=db.collection('posts').doc(id);const doc=await d.get();await d.update({likes:(doc.data().likes||0)+1})}
+async function apagar(id){if(confirm("Apagar?"))await db.collection('posts').doc(id).delete()}
+carregarFeed();
 </script>
 </body>
 </html>
